@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSharpDesignPatterns.DesignPatterns.Structural.FlyWeight
 {
-
     /*
-     * Flyweight
-     * 
      * The foolow 5 should be true to make this pattern a good use case.
      * 1. When the app uses alot of object
      * 2. Storage costs are high
@@ -17,6 +14,10 @@ namespace CSharpDesignPatterns.DesignPatterns.Structural.FlyWeight
      * 4. If you removed the extrinsic stat a large group of objects can be replaced be few shared objects
      * 5. The application doent requre object identitiy
      */
+
+    /*
+    * Flyweight
+    */
     public interface ICharacter
     {
         void Draw(string fontFamily, int fontSize);
