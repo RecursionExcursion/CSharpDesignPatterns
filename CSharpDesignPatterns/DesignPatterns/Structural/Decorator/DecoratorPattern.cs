@@ -9,6 +9,7 @@ namespace CSharpDesignPatterns.DesignPatterns.Structural.Decorator
 
     /*
      * AKA Wrapper
+     * Adds responsiblities to an object
      */
 
     /*

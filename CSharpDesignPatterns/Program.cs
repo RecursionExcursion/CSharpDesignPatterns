@@ -9,6 +9,8 @@ using CSharpDesignPatterns.DesignPatterns.Structural.Bridge;
 using CSharpDesignPatterns.DesignPatterns.Structural.Decorator;
 using CSharpDesignPatterns.DesignPatterns.Structural.Composite;
 using CSharpDesignPatterns.DesignPatterns.Structural.Facade;
+using CSharpDesignPatterns.DesignPatterns.Structural.Proxy;
+using CSharpDesignPatterns.DesignPatterns.Structural.FlyWeight;
 
 /*
  * 
@@ -190,14 +192,58 @@ Console.WriteLine($"Size of root: {root.GetSize()}");
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("\nFacade Pattern");
 
-DiscountFacade facade= new();
+DiscountFacade facade = new();
 
 int x = 1;
 int y = 10;
-
 Console.WriteLine($"Discount % for customer with id {x}: {facade.CalculateDiscountPercentage(x)}");
 Console.WriteLine($"Discount % for customer with id {y}: {facade.CalculateDiscountPercentage(y)}");
 
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Yellow;
+Console.WriteLine("\nProxy Pattern");
+
+//Without Proxy
+Console.WriteLine("Constructing document");
+Document doc = new("MyDoc.pdf");
+Console.WriteLine("Doc constructed");
+doc.DisplayDocument();
+
+//with Proxy
+Console.WriteLine("\nConstructing document");
+DocumentProxy proxyDoc = new("MyDoc.pdf");
+Console.WriteLine("Doc proxy constructed");
+proxyDoc.DisplayDocument();
+
+//with chained Proxies
+Console.WriteLine("\nConstructing document");
+ProtectedDocumentProxy protectedPoxyDoc = new("MyDoc.pdf", "Viewer");
+Console.WriteLine("Doc proxy constructed");
+protectedPoxyDoc.DisplayDocument();
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Cyan;
+Console.WriteLine("\nFlyweight Pattern");
+
+var someChars = "abba";
+
+CharacterFactory characterFactory = new();
+
+var charObj = characterFactory.GetCharacter(someChars[0]);
+
+foreach (char c in someChars)
+{
+    characterFactory.GetCharacter(c)?.Draw("Arial", 12);
+}
+
+//Unshared Conrcrete Flyweight
+var paragraph = characterFactory.CreateParagraph(new List<ICharacter>() { charObj }, 1);
+
+paragraph.Draw("Times New Roman", 8);
 
 Console.ResetColor();
 

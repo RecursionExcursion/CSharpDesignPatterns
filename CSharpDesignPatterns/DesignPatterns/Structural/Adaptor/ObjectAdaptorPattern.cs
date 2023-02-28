@@ -9,6 +9,7 @@ namespace CSharpDesignPatterns.DesignPatterns.Structural.Adaptor
 
     /*
      * AKA WrapperPattern
+     * Provides a different interface for the client accessing the object
      */
 
     /*
