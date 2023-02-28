@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharpDesignPatterns.DesignPatterns.Singleton
+namespace CSharpDesignPatterns.DesignPatterns.CreationalPatterns.Singleton
 {
 
     /*
@@ -15,7 +15,7 @@ namespace CSharpDesignPatterns.DesignPatterns.Singleton
     internal class Logger
     {
 
-        
+
         private static Logger? _instance;
 
         public static Logger Instance

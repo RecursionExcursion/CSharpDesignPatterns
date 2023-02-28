@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharpDesignPatterns.DesignPatterns.Factory
+namespace CSharpDesignPatterns.DesignPatterns.CreationalPatterns.Factory
 {
     /*
      * Product
@@ -100,7 +100,7 @@ namespace CSharpDesignPatterns.DesignPatterns.Factory
 
         public CodeDiscountFacory(Guid code)
         {
-            this._code = code;
+            _code = code;
         }
 
         public override DiscountService CreateDiscountService()
