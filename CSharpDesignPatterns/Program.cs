@@ -11,6 +11,13 @@ using CSharpDesignPatterns.DesignPatterns.Structural.Composite;
 using CSharpDesignPatterns.DesignPatterns.Structural.Facade;
 using CSharpDesignPatterns.DesignPatterns.Structural.Proxy;
 using CSharpDesignPatterns.DesignPatterns.Structural.FlyWeight;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Template;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Strategy;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Command;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Memento;
+using CommandManager = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.CommandManager;
+using IEmployeeManagerRepository = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.IEmployeeManagerRepository;
+using EmployeeMamangerRepository = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.EmployeeMamangerRepository;
 
 /*
  * 
@@ -83,13 +90,13 @@ garage.Show();
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("\nPrototype Pattern");
 
-var manager = new Manager("Cindy");
-var managerClone = (Manager) manager.Clone(true);
+var manager = new CSharpDesignPatterns.DesignPatterns.Creational.Prototype.Manager("Cindy");
+var managerClone = (CSharpDesignPatterns.DesignPatterns.Creational.Prototype.Manager) manager.Clone(true);
 Console.WriteLine($"Manager was cloned: {managerClone.Name}");
 
 
-var employee = new Employee("Kevin", managerClone);
-var employeeClone = (Employee) employee.Clone(true);
+var employee = new CSharpDesignPatterns.DesignPatterns.Creational.Prototype.Employee("Kevin", managerClone);
+var employeeClone = (CSharpDesignPatterns.DesignPatterns.Creational.Prototype.Employee) employee.Clone(true);
 Console.WriteLine($"Employee was cloned: {employeeClone.Name}, with manager {employeeClone.Manager.Name}");
 
 
@@ -245,7 +252,110 @@ var paragraph = characterFactory.CreateParagraph(new List<ICharacter>() { charOb
 
 paragraph.Draw("Times New Roman", 8);
 
-Console.ResetColor();
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Red;
+Console.WriteLine("\nTemplate Pattern");
+
+ExchangeMailParser exchangeMailParser = new();
+Console.WriteLine(exchangeMailParser.ParseMailBody("bdi723e-89883-d34f34-dcd2d23d23d"));
+Console.WriteLine();
+
+ApacheMailParser apacheMailParser = new();
+Console.WriteLine(apacheMailParser.ParseMailBody("sdfsf-89834f43f83-3f4f34-45g45g45g4"));
+Console.WriteLine();
+
+
+EudoraMailParser eurdoraMailParser = new();
+Console.WriteLine(eurdoraMailParser.ParseMailBody("4g4g45g4-gdrgdrg-4g45-g45geg45"));
+
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Blue;
+Console.WriteLine("\nStrategy Pattern");
+
+Order order = new("Marvin Software", 5, "Visual Studio License");
+
+order.Export(new CSVExportService());
+order.Export(new JsonExportService());
+order.Export(new XMLExportService());
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.DarkGray;
+Console.WriteLine("\nCommand Pattern");
+
+CommandManager commandManager = new();
+IEmployeeManagerRepository repository = new EmployeeMamangerRepository();
+
+commandManager.Invoke(new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.AddEmployeeToManagerList(repository, 1,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.Employee(111, "Kevin")));
+repository.WriteDataStore();
+
+commandManager.Invoke(new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.AddEmployeeToManagerList(repository, 1,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.Employee(222, "Mark")));
+repository.WriteDataStore();
+
+commandManager.Invoke(new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.AddEmployeeToManagerList(repository, 2,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.Employee(333, "Foofers")));
+repository.WriteDataStore();
+
+//Adding duplicate employee
+commandManager.Invoke(new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.AddEmployeeToManagerList(repository, 2,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Command.Employee(333, "Foofers")));
+repository.WriteDataStore();
+
+commandManager.Undo();
+repository.WriteDataStore();
+
+commandManager.UndoAll();
+repository.WriteDataStore();
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Cyan;
+Console.WriteLine("\nMemento Pattern");
+
+CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.CommandManager mementoCommandManager = new();
+CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.IEmployeeManagerRepository mementoRepository =
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.EmployeeMamangerRepository();
+
+mementoCommandManager.Invoke(
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.AddEmployeeToManagerList(mementoRepository, 1,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.Employee(111, "Kevin")));
+
+mementoRepository.WriteDataStore();
+
+mementoCommandManager.Invoke(
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.AddEmployeeToManagerList(mementoRepository, 1,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.Employee(222, "Mark")));
+
+mementoRepository.WriteDataStore();
+
+mementoCommandManager.Invoke(
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.AddEmployeeToManagerList(mementoRepository, 2,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.Employee(333, "Foofers")));
+
+mementoRepository.WriteDataStore();
+
+//Adding duplicate employee
+mementoCommandManager.Invoke(
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.AddEmployeeToManagerList(mementoRepository, 2,
+    new CSharpDesignPatterns.DesignPatterns.Behavioral.Memento.Employee(333, "Foofers")));
+
+mementoRepository.WriteDataStore();
+
+mementoCommandManager.Undo();
+mementoRepository.WriteDataStore();
+
+mementoCommandManager.UndoAll();
+mementoRepository.WriteDataStore();
 
 
 
