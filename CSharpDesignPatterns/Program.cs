@@ -21,6 +21,8 @@ using EmployeeMamangerRepository = CSharpDesignPatterns.DesignPatterns.Behaviora
 using CSharpDesignPatterns.DesignPatterns.Behavioral.Mediator;
 using CSharpDesignPatterns.DesignPatterns.Behavioral.ChainOfRespnsibility;
 using System.ComponentModel.DataAnnotations;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Observer;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.State;
 
 /*
  * 
@@ -409,3 +411,41 @@ try
     Console.Write("Exception thrown-\t");
     Console.WriteLine(validationException.Message);
 }
+
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Green;
+Console.WriteLine("\nObserver Pattern");
+
+TicketStockService ticketStockService = new();
+TicketResellerService ticketResellerService = new();
+CSharpDesignPatterns.DesignPatterns.Behavioral.Observer.OrderService orderService = new();
+
+orderService.AddObserver(ticketStockService);
+orderService.AddObserver(ticketResellerService);
+
+orderService.CompleteTicketSale(1, 2);
+
+Console.WriteLine();
+
+orderService.RemoveObserver(ticketStockService);
+
+orderService.CompleteTicketSale(2, 4);
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.DarkBlue;
+Console.WriteLine("\nState Pattern");
+
+BankAccount bankAccount = new();
+bankAccount.Deposit(100);
+bankAccount.Withdraw(500);      
+bankAccount.Withdraw(100);
+
+bankAccount.Deposit(1500);
+bankAccount.Deposit(100);
+bankAccount.Deposit(100);
+bankAccount.Withdraw(2000);
