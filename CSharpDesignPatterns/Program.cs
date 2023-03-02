@@ -23,6 +23,9 @@ using CSharpDesignPatterns.DesignPatterns.Behavioral.ChainOfRespnsibility;
 using System.ComponentModel.DataAnnotations;
 using CSharpDesignPatterns.DesignPatterns.Behavioral.Observer;
 using CSharpDesignPatterns.DesignPatterns.Behavioral.State;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Iterator;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Visitor;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Interpreter;
 
 /*
  * 
@@ -442,10 +445,79 @@ Console.WriteLine("\nState Pattern");
 
 BankAccount bankAccount = new();
 bankAccount.Deposit(100);
-bankAccount.Withdraw(500);      
+bankAccount.Withdraw(500);
 bankAccount.Withdraw(100);
 
 bankAccount.Deposit(1500);
 bankAccount.Deposit(100);
 bankAccount.Deposit(100);
 bankAccount.Withdraw(2000);
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.DarkRed;
+Console.WriteLine("\nIterator Pattern");
+
+PeopleCollection people = new();
+people.Add(new("Foofers", "USA"));
+people.Add(new("Court", "USA"));
+people.Add(new("Ryan", "USA"));
+people.Add(new("Marshal", "Atlantic Ocean"));
+
+IPeopleIterator peopleIterator = people.CreateIterator();
+for (
+    CSharpDesignPatterns.DesignPatterns.Behavioral.Iterator.Person p = peopleIterator.First();
+    !peopleIterator.IsDone;
+    p = peopleIterator.Next())
+{
+    Console.WriteLine(p?.Name);
+}
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.DarkYellow;
+Console.WriteLine("\nVisitor Pattern");
+
+Container container = new();
+
+container.Customers.Add(new Customer("Foofers", 500));
+container.Customers.Add(new Customer("Court", 1000));
+container.Customers.Add(new Customer("Marshal", 800));
+container.Employees.Add(new CSharpDesignPatterns.DesignPatterns.Behavioral.Visitor.Employee("Ryan", 1));
+container.Employees.Add(new CSharpDesignPatterns.DesignPatterns.Behavioral.Visitor.Employee("Tom", 11));
+
+DiscountVisitor discountVisitor = new();
+
+container.Accept(discountVisitor);
+
+Console.WriteLine($"Total discount: {discountVisitor.TotalDiscountsGiven}");
+
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.DarkCyan;
+Console.WriteLine("\nInterpreter Pattern");
+
+List<RomanExpression> romanExpressions = new List<RomanExpression> {
+    new RomanHundredExpression(), new RomanTenExpression(), new RomanOneExpression()
+};
+
+int num = 5;
+RomanContext context = new(num);
+romanExpressions.ForEach(ex => ex.Interpret(context));
+Console.WriteLine($"Translating Arabic numerals to Roman numerals: {num} = {context.Output}");
+
+
+num = 81;
+context = new(num);
+romanExpressions.ForEach(ex => ex.Interpret(context));
+Console.WriteLine($"Translating Arabic numerals to Roman numerals: {num} = {context.Output}");
+
+
+num = 733;
+context = new(num);
+romanExpressions.ForEach(ex => ex.Interpret(context));
+Console.WriteLine($"Translating Arabic numerals to Roman numerals: {num} = {context.Output}");
