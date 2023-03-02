@@ -18,6 +18,9 @@ using CSharpDesignPatterns.DesignPatterns.Behavioral.Memento;
 using CommandManager = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.CommandManager;
 using IEmployeeManagerRepository = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.IEmployeeManagerRepository;
 using EmployeeMamangerRepository = CSharpDesignPatterns.DesignPatterns.Behavioral.Command.EmployeeMamangerRepository;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.Mediator;
+using CSharpDesignPatterns.DesignPatterns.Behavioral.ChainOfRespnsibility;
+using System.ComponentModel.DataAnnotations;
 
 /*
  * 
@@ -214,7 +217,7 @@ Console.WriteLine("\nProxy Pattern");
 
 //Without Proxy
 Console.WriteLine("Constructing document");
-Document doc = new("MyDoc.pdf");
+CSharpDesignPatterns.DesignPatterns.Structural.Proxy.Document doc = new("MyDoc.pdf");
 Console.WriteLine("Doc constructed");
 doc.DisplayDocument();
 
@@ -358,4 +361,51 @@ mementoCommandManager.UndoAll();
 mementoRepository.WriteDataStore();
 
 
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Magenta;
+Console.WriteLine("\nMediator Pattern");
 
+TeamChatRoom teamChatRoom = new();
+
+Lawyer foof = new("Foofers");
+Lawyer court = new("Court");
+AccountManager ryan = new("Ryan");
+AccountManager bob = new("Bob");
+AccountManager don = new("Don");
+
+teamChatRoom.Register(bob, foof, court, ryan, don);
+
+bob.Send("Happy Wednesday everyone!");
+foof.Send("Woof!");
+ryan.Send(court.Name, "I love you");
+court.SendTo<Lawyer>("He loves me!");
+
+/*
+ * 
+ */
+Console.ForegroundColor = ConsoleColor.Yellow;
+Console.WriteLine("\nChain of Responsibility Pattern");
+
+CSharpDesignPatterns.DesignPatterns.Behavioral.ChainOfRespnsibility.Document validDocument = new("Java is way better that C#", DateTimeOffset.UtcNow, true, true);
+CSharpDesignPatterns.DesignPatterns.Behavioral.ChainOfRespnsibility.Document invalidDocument = new("Java is way worse that C#", DateTimeOffset.UtcNow, false, true);
+
+var documentHandlerChain = new DocumentTitleHandler();
+documentHandlerChain
+    .SetSuccessor(new DocumentLastModifiedHandler())
+    .SetSuccessor(new DocumentApprovedByLitigationHandler())
+    .SetSuccessor(new DocumentApprovedByManagementHandler());
+
+try
+{
+    documentHandlerChain.Handle(validDocument);
+    Console.WriteLine("Valid doc is valid");
+    documentHandlerChain.Handle(invalidDocument);
+    Console.WriteLine("Invalid doc is valid");
+
+} catch (ValidationException validationException)
+{
+    Console.Write("Exception thrown-\t");
+    Console.WriteLine(validationException.Message);
+}
